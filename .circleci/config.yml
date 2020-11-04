@@ -120,9 +120,9 @@ jobs:
       - install_shellspec
       - install_deps
       - build_ts
-      - run:
-          name: Run auth
-          command: npm run snyk-auth
+#       - run:
+#           name: Run auth
+#           command: npm run snyk-auth
       - run:
           name: Run tests
           command: npm run test:common
@@ -145,40 +145,40 @@ jobs:
           name: Setup alias for snyk
           working_directory: ~/snyk/
           command: sudo ./test/smoke/setup-alias-for-snyk.sh
-      - run:
-          name: Run shellspec
-          working_directory: ~/snyk/test/smoke
-          command: |
-            echo "Checkout the README in test/smoke folder for more details about this step"
-            unset SNYK_API
-            unset SNYK_API_KEY
-            shellspec -f d
+#       - run:
+#           name: Run shellspec
+#           working_directory: ~/snyk/test/smoke
+#           command: |
+#             echo "Checkout the README in test/smoke folder for more details about this step"
+#             unset SNYK_API
+#             unset SNYK_API_KEY
+#             shellspec -f d
 
-  test-windows:
-    <<: *defaults
-    <<: *windows_defaults
-    steps:
-      - run: git config --global core.autocrlf false
-      - install_gradle_windows
-      - install_maven_windows
-      - install_sbt_windows
-      - install_node_npm:
-          node_version: << parameters.node_version >>
-      - show_node_version
-      - checkout
-      - attach_workspace:
-          at: ~/snyk
-      - install_deps
-      - build_ts
-      - run:
-          name: npm version
-          command: npm --version
-      - run:
-          name: Run auth
-          command: npm run snyk-auth-windows
-      - run:
-          name: Run tests
-          command: npm run test-windows
+#   test-windows:
+#     <<: *defaults
+#     <<: *windows_defaults
+#     steps:
+#       - run: git config --global core.autocrlf false
+#       - install_gradle_windows
+#       - install_maven_windows
+#       - install_sbt_windows
+#       - install_node_npm:
+#           node_version: << parameters.node_version >>
+#       - show_node_version
+#       - checkout
+#       - attach_workspace:
+#           at: ~/snyk
+#       - install_deps
+#       - build_ts
+#       - run:
+#           name: npm version
+#           command: npm --version
+#       - run:
+#           name: Run auth
+#           command: npm run snyk-auth-windows
+#       - run:
+#           name: Run tests
+#           command: npm run test-windows
 
   test-unix:
     <<: *defaults
@@ -206,19 +206,19 @@ jobs:
           name: Run tests
           command: npm test
 
-  release:
-    <<: *defaults
-    docker:
-      - image: circleci/node:<< parameters.node_version >>
-    resource_class: small
-    steps:
-      - checkout
-      - install_deps
-      - run: sudo npm i -g semantic-release @semantic-release/exec pkg
-      - run: sudo apt-get install -y osslsigncode
-      - run:
-          name: Publish to GitHub
-          command: semantic-release
+#   release:
+#     <<: *defaults
+#     docker:
+#       - image: circleci/node:<< parameters.node_version >>
+#     resource_class: small
+#     steps:
+#       - checkout
+#       - install_deps
+#       - run: sudo npm i -g semantic-release @semantic-release/exec pkg
+#       - run: sudo apt-get install -y osslsigncode
+#       - run:
+#           name: Publish to GitHub
+#           command: semantic-release
 
 workflows:
   version: 2
@@ -232,46 +232,46 @@ workflows:
             branches:
               ignore:
                 - master
-      - test-windows:
-          name: Windows Tests for Node v12 support
-          context: nodejs-install
-          node_version: '12.0.0'
-          requires:
-            - Regression Test
-          filters:
-            branches:
-              ignore:
-                - master
-      - test-windows:
-          name: Windows Tests for Node v14 support
-          context: nodejs-install
-          node_version: '14'
-          requires:
-            - Regression Test
-          filters:
-            branches:
-              ignore:
-                - master
-      - test-windows:
-          name: Windows Tests for Node v10 support
-          context: nodejs-install
-          node_version: '10.21.0'
-          requires:
-            - Regression Test
-          filters:
-            branches:
-              ignore:
-                - master
-      - test-windows:
-          name: Windows Tests for Node v8 support
-          context: nodejs-install
-          node_version: '8.17.0'
-          requires:
-            - Regression Test
-          filters:
-            branches:
-              ignore:
-                - master
+#       - test-windows:
+#           name: Windows Tests for Node v12 support
+#           context: nodejs-install
+#           node_version: '12.0.0'
+#           requires:
+#             - Regression Test
+#           filters:
+#             branches:
+#               ignore:
+#                 - master
+#       - test-windows:
+#           name: Windows Tests for Node v14 support
+#           context: nodejs-install
+#           node_version: '14'
+#           requires:
+#             - Regression Test
+#           filters:
+#             branches:
+#               ignore:
+#                 - master
+#       - test-windows:
+#           name: Windows Tests for Node v10 support
+#           context: nodejs-install
+#           node_version: '10.21.0'
+#           requires:
+#             - Regression Test
+#           filters:
+#             branches:
+#               ignore:
+#                 - master
+#       - test-windows:
+#           name: Windows Tests for Node v8 support
+#           context: nodejs-install
+#           node_version: '8.17.0'
+#           requires:
+#             - Regression Test
+#           filters:
+#             branches:
+#               ignore:
+#                 - master
       - test-unix:
           name: Unix Tests for Node v12 support
           context: nodejs-install
@@ -313,11 +313,11 @@ workflows:
               ignore:
                 - master
 
-      - release:
-          name: Release
-          context: nodejs-app-release
-          node_version: '14'
-          filters:
-            branches:
-              only:
-                - master
+#       - release:
+#           name: Release
+#           context: nodejs-app-release
+#           node_version: '14'
+#           filters:
+#             branches:
+#               only:
+#                 - master
